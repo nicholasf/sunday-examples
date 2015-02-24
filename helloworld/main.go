@@ -19,13 +19,19 @@ type HelloWorldController struct {
     sunday.DefaultController
 }
 
-func (h HelloWorldController) Do(r sunday.Request) (v sunday.View, e error) {
+func (h HelloWorldController) Do(r sunday.Request) (m sunday.Model, v sunday.View, e error) {
     v = sunday.ViewFunc(HelloWorld)
+    m = HelloWorldModel{ Msg: "Hello World!"}
     return
 }
 
-func HelloWorld(r sunday.Request) (resp sunday.Response, e error) {
+func HelloWorld(m sunday.Model) (resp sunday.Response, e error) {
     resp = sunday.NewResponse()
-    resp.SetData([]byte("Hello World!"))
+    hwm :=m.(HelloWorldModel)
+    resp.SetData([]byte(hwm.Msg))
     return 
+}
+
+type HelloWorldModel struct {
+    Msg string
 }
